@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,6 +14,6 @@ namespace Imagination.Handlers
         /// </summary>
         /// <param name="imageStream">Request image stream</param>
         /// <returns>JPG image stream</returns>
-        Task<FileStreamResult> ConvertToJpg(Stream imageStream, CancellationToken cancellationToken);
+        Task<Stream> ConvertToJpg(Stream imageStream, CancellationToken cancellationToken);
     }
 }

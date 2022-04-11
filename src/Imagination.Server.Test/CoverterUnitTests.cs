@@ -27,15 +27,12 @@ namespace Imagination.Server.Test
         {
             var png = File.Open(@"Data\png.png", FileMode.Open);
             var response = await _converter.ConvertToJpg(png, new CancellationToken()).ConfigureAwait(false);
-            var extension = MimeTypes.MimeTypeMap.GetExtension(response.ContentType);
 
-            Assert.IsNotNull(response?.FileStream, "Response must not be null");
-            Assert.IsNotNull(extension, "Extension must not be null");
-            Assert.AreEqual(".jpg", extension, "Extension must be of jpg type");
-            Assert.AreNotEqual(0, response.FileStream.Length, "Stream length must be greater then 0");
-            Assert.AreEqual(0, response.FileStream.Position, "Stream position must be 0");
+            Assert.IsNotNull(response, "Response must not be null");
+            Assert.AreNotEqual(0, response.Length, "Stream length must be greater then 0");
+            Assert.AreEqual(0, response.Position, "Stream position must be 0");
 
-            //await SaveFile(response.FileStream, extension);
+            await SaveFile(response, ".jpg");
         }
 
         private async Task SaveFile(Stream responseStream, string extension)

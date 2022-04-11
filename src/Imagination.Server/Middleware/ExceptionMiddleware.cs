@@ -36,9 +36,10 @@ namespace Imagination.Middleware
         /// <returns></returns>
         public async Task InvokeAsync(HttpContext httpContext)
         {
+            ArgumentNullException.ThrowIfNull(httpContext, nameof(httpContext));
+
             try
             {
-                ArgumentNullException.ThrowIfNull(httpContext, nameof(httpContext));
                 await _next(httpContext).ConfigureAwait(false);
             }
             catch (HttpServerException ex)

@@ -1,6 +1,5 @@
 ﻿using Imagination.Handlers.Models;
 using Imagination.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using System;
@@ -15,7 +14,6 @@ namespace Imagination.Handlers
     /// </summary>
     public class ImageConverter : IImageConverter
     {
-        private const string JPG_EXTENSION = "image/jpeg";
 
         private readonly IExtensionBuilder _extensionBuilder;
         private readonly ILogger<ImageConverter> _logger;
@@ -40,18 +38,13 @@ namespace Imagination.Handlers
         /// </summary>
         /// <param name="imageStream">Request image stream</param>
         /// <returns>JPG image stream</returns>
-        public async Task<FileStreamResult> ConvertToJpg(Stream imageStream, CancellationToken cancellationToken)
+        public async Task<Stream> ConvertToJpg(Stream imageStream, CancellationToken cancellationToken)
         {
-            _logger.LogDebug($"Conversion started");
-
             ArgumentNullException.ThrowIfNull(imageStream, nameof(imageStream));
 
             var extension = await _extensionBuilder.GetImageExtensionType(imageStream).ConfigureAwait(false);
             var responseStream = await GetResponseStream(imageStream, extension.Type, cancellationToken).ConfigureAwait(false);
-
-            _logger.LogDebug($"Conversion finished, from {extension.Name} and original size {imageStream.Length} to JPG with new size {responseStream.Length}");
-
-            return new FileStreamResult(responseStream, JPG_EXTENSION);
+            return responseStream;
         }
 
         private async Task<Stream> GetResponseStream(Stream imageStream, ImageExtensionType extension, CancellationToken cancellationToken)
@@ -63,7 +56,7 @@ namespace Imagination.Handlers
                 case ImageExtensionType.Jpg:
                     {
                         Stream responseStream = new MemoryStream();
-                        await imageStream.CopyToAsync(responseStream, cancellationToken).ConfigureAwait(false);
+                        await imageStream.CopyToAsync(responseStream, 81920, cancellationToken).ConfigureAwait(false);
                         responseStream.Seek(0, SeekOrigin.Begin);
                         return responseStream;
                     }

@@ -13,6 +13,8 @@ namespace Imagination.Controllers
     [ApiController]
     public class ConvertController : ControllerBase
     {
+        private const string JPG_EXTENSION = "image/jpeg";
+
         private readonly IImageConverter _converter;
 
         /// <summary>
@@ -37,9 +39,11 @@ namespace Imagination.Controllers
         [ProducesResponseType(statusCode: 200, type: typeof(FileStreamResult))]
         [ProducesResponseType(statusCode: 400, type: typeof(string))]
         [ProducesResponseType(statusCode: 500, type: typeof(string))]
-        public async Task<IActionResult> Convert(CancellationToken cancellationToken)
+        public async Task Convert(CancellationToken cancellationToken)
         {
-            return await _converter.ConvertToJpg(Request.Body, cancellationToken).ConfigureAwait(false);
+            using var response = await _converter.ConvertToJpg(Request.Body, cancellationToken).ConfigureAwait(false);
+            this.Response.ContentType = JPG_EXTENSION;
+            await response.CopyToAsync(this.Response.Body);
         }
     }
 }
