@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <RootNamespace>Imagination</RootNamespace>
+        <UserSecretsId>38bb17ef-90f3-4a62-b01b-8ac6d73189c5</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+      <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.2.0-alpha1" />
+      <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.0.0-rc7" />
+      <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc7" />
+      <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc7" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    </ItemGroup>
+
+</Project>
