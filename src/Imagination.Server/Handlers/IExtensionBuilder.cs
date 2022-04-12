@@ -1,5 +1,6 @@
 ﻿using Imagination.Handlers.Models;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Imagination.Handlers
@@ -12,7 +13,7 @@ namespace Imagination.Handlers
         /// <summary>
         /// Get extension image type
         /// </summary>
-        Task<ImageExtension> GetImageExtensionType(Stream stream);
+        Task<ImageExtension> GetImageExtensionType(Stream stream, CancellationToken cancellationToken);
 
     }
 }

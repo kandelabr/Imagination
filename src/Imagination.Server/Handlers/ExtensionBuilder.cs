@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Imagination.Handlers
@@ -31,7 +32,7 @@ namespace Imagination.Handlers
         /// <summary>
         /// Get extension image type
         /// </summary>
-        public async Task<ImageExtension> GetImageExtensionType(Stream stream)
+        public async Task<ImageExtension> GetImageExtensionType(Stream stream, CancellationToken cancellationToken)
         {
             if (_extensions == null)
             {
@@ -39,21 +40,21 @@ namespace Imagination.Handlers
                 _maxSize = _extensions.Select(x => x.ExtensionData.Length).Max();
             }
 
-            var bytes = await GetMaxImageHeaderBytes(stream).ConfigureAwait(false);
+            var bytes = await GetMaxImageHeaderBytes(stream, cancellationToken).ConfigureAwait(false);
             return GetImageExtensionType(bytes);
         }
 
-        private async Task<byte[]> GetMaxImageHeaderBytes(Stream stream)
+        private async Task<byte[]> GetMaxImageHeaderBytes(Stream stream, CancellationToken cancellationToken)
         {
             byte[] extensionBytes = new byte[_maxSize];
 
             if (stream.Length >= _maxSize)
             {
-                await stream.ReadAsync(extensionBytes, 0, _maxSize).ConfigureAwait(false);
+                await stream.ReadAsync(extensionBytes, 0, _maxSize, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                await stream.ReadAsync(extensionBytes).ConfigureAwait(false);
+                await stream.ReadAsync(extensionBytes, cancellationToken).ConfigureAwait(false);
                 extensionBytes = extensionBytes.Take((int)stream.Length).ToArray();
             }
 

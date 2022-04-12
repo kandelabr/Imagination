@@ -51,7 +51,6 @@ namespace Imagination
             });
 
             app.UseMiddleware<ExceptionMiddleware>();
-            app.UseMiddleware<TimeoutMiddleware>();
             app.UseMiddleware<PerformanceMiddleware>();
 
             if (env.IsDevelopment())

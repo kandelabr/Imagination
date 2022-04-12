@@ -42,7 +42,7 @@ namespace Imagination.Handlers
         {
             ArgumentNullException.ThrowIfNull(imageStream, nameof(imageStream));
 
-            var extension = await _extensionBuilder.GetImageExtensionType(imageStream).ConfigureAwait(false);
+            var extension = await _extensionBuilder.GetImageExtensionType(imageStream, cancellationToken).ConfigureAwait(false);
             var responseStream = await GetResponseStream(imageStream, extension.Type, cancellationToken).ConfigureAwait(false);
             return responseStream;
         }

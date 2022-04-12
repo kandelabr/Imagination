@@ -43,7 +43,7 @@ namespace Imagination.Controllers
         {
             using var response = await _converter.ConvertToJpg(Request.Body, cancellationToken).ConfigureAwait(false);
             this.Response.ContentType = JPG_EXTENSION;
-            await response.CopyToAsync(this.Response.Body);
+            await response.CopyToAsync(this.Response.Body, 81920, cancellationToken);
         }
     }
 }

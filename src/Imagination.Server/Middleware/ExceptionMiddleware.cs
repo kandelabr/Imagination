@@ -52,6 +52,11 @@ namespace Imagination.Middleware
                 _logger.LogWarning(ex, "Client error occurred");
                 await ErrorResponse(httpContext, HttpStatusCode.BadRequest, ex.Message).ConfigureAwait(false);
             }
+            catch (TaskCanceledException)
+            {
+                _logger.LogError("Request was canceled");
+                await ErrorResponse(httpContext, HttpStatusCode.BadRequest, "Client cancelled the request").ConfigureAwait(false);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Unknown server error occurred");
