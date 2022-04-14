@@ -1,6 +1,5 @@
 ﻿using Imagination.Handlers.Models;
 using Imagination.Models;
-using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
 using System;
 using System.IO;
@@ -16,20 +15,16 @@ namespace Imagination.Handlers
     {
 
         private readonly IExtensionBuilder _extensionBuilder;
-        private readonly ILogger<ImageConverter> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageConverter" /> class.
         /// </summary>
         /// <param name="extensionBuilder">The extension builder</param>
-        /// <param name="logger">The logger</param>
-        public ImageConverter(IExtensionBuilder extensionBuilder, ILogger<ImageConverter> logger)
+        public ImageConverter(IExtensionBuilder extensionBuilder)
         {
             ArgumentNullException.ThrowIfNull(extensionBuilder, nameof(extensionBuilder));
-            ArgumentNullException.ThrowIfNull(extensionBuilder, nameof(logger));
 
             _extensionBuilder = extensionBuilder;
-            _logger = logger;
         }
 
 
@@ -47,7 +42,7 @@ namespace Imagination.Handlers
             return responseStream;
         }
 
-        private async Task<Stream> GetResponseStream(Stream imageStream, ImageExtensionType extension, CancellationToken cancellationToken)
+        private static async Task<Stream> GetResponseStream(Stream imageStream, ImageExtensionType extension, CancellationToken cancellationToken)
         {
             imageStream.Seek(0, SeekOrigin.Begin);
 

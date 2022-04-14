@@ -3,6 +3,7 @@ using Imagination.Models;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Imagination.Handlers
 {
@@ -33,26 +34,17 @@ namespace Imagination.Handlers
             foreach (var extension in _imageExtensions)
             {
                 extensions.Add(new HeaderExtension(extension.ExtensionData,
-                    Map(extension.CompareIndexCollection),
-                    new ImageExtension(extension.ExtensionName, Map(extension.ExtensionType))));
+                    extension.CompareIndexCollection.Select(x => new CompareExtensionConfiguration(x.Start, x.Size)).ToList(),
+                    ImageExtension.FromValidType(extension.ExtensionName, Map(extension.ExtensionType))));
             }
 
             return extensions;
-        }
-
-        private IList<CompareExtensionConfiguration> Map(Configuration.CompareIndex[] compareIndexCollection)
-        {
-            IList<CompareExtensionConfiguration> configurations = new List<CompareExtensionConfiguration>();
-            foreach (var compareIndex in compareIndexCollection)
-                configurations.Add(new CompareExtensionConfiguration(compareIndex.Start, compareIndex.Size));
-            return configurations;
         }
 
         private static ImageExtensionType Map(Configuration.ImageExtensionType extensionType) => extensionType switch
         {
             Configuration.ImageExtensionType.Jpg => ImageExtensionType.Jpg,
             Configuration.ImageExtensionType.ValidImage => ImageExtensionType.ValidImage,
-            Configuration.ImageExtensionType.Invalid => ImageExtensionType.Invalid,
             _ => throw new HttpServerException($"Server mapping exception from {extensionType} type.")
         };
     }

@@ -12,14 +12,14 @@ namespace Imagination.Middleware
     public sealed class PerformanceMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly ILogger<PerformanceMiddleware> _logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PerformanceMiddleware"/> class.
         /// </summary>
         /// <param name="next">The next delegate.</param>
         /// <param name="logger">The logger.</param>
-        public PerformanceMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
+        public PerformanceMiddleware(RequestDelegate next, ILogger<PerformanceMiddleware> logger)
         {
             ArgumentNullException.ThrowIfNull(next, nameof(next));
             ArgumentNullException.ThrowIfNull(next, nameof(logger));

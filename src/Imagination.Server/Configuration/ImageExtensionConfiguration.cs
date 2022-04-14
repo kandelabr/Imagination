@@ -14,11 +14,7 @@ namespace Imagination.Configuration
         /// <summary>
         /// Other valid image type (PNG, GIF...)
         /// </summary>
-        ValidImage,
-        /// <summary>
-        /// Invalid image type (TXT, MP3, ...)
-        /// </summary>
-        Invalid
+        ValidImage
     }
 
     /// <summary>

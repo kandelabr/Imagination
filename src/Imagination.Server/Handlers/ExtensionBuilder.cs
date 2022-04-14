@@ -81,7 +81,7 @@ namespace Imagination.Handlers
                 }
             }
 
-            return new ImageExtension(null, ImageExtensionType.Invalid);
+            return ImageExtension.FromInvalidType();
         }
     }
 }

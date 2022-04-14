@@ -55,7 +55,7 @@ namespace Imagination.Middleware
             catch (TaskCanceledException)
             {
                 _logger.LogError("Request was canceled");
-                await ErrorResponse(httpContext, HttpStatusCode.BadRequest, "Client cancelled the request").ConfigureAwait(false);
+                await ErrorResponse(httpContext, HttpStatusCode.BadRequest, "Client canceled the request").ConfigureAwait(false);
             }
             catch (Exception ex)
             {
